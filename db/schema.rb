@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_09_052911) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_09_095703) do
   create_table "contracts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "contract_no"
     t.text "description"
     t.date "contract_date"
     t.datetime "created_at", null: false

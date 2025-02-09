@@ -49,6 +49,7 @@ gem "bootsnap", require: false
 
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 5.1.3'
+gem 'rails_admin', '3.1.4'
 gem 'byebug', group: :development
 gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.1.1'
 gem "stimulus-rails"
