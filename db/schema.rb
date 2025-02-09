@@ -10,13 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_06_164954) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_09_052911) do
   create_table "contracts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.date "contract_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "manufacture_id", null: false
+    t.index ["manufacture_id"], name: "index_contracts_on_manufacture_id"
   end
 
+  create_table "manufactures", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "amount", precision: 10
+    t.date "payment_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "contracts", "manufactures"
 end

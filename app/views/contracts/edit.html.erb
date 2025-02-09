@@ -1,0 +1,24 @@
+<h1>Edit Contract</h1>
+
+<%= form_with model: @contract, local: true do |f| %>
+  <div>
+    <%= f.label :name, "Contract Name" %>
+    <%= f.text_field :name, required: true %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :contract_date, "Contract Date" %>
+    <%= f.date_field :contract_date, required: true %>
+  </div>
+
+  <div>
+    <%= f.submit "Update Contract", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to List', contracts_path, class: 'btn btn-secondary' %>

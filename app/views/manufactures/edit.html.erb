@@ -1,0 +1,19 @@
+<h1><%= @manufacture.new_record? ? "Add New Manufacture" : "Edit Manufacture" %></h1>
+
+<%= form_with model: @manufacture, local: true do |f| %>
+  <div>
+    <%= f.label :name, "Name" %>
+    <%= f.text_field :name, required: true %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.submit @manufacture.new_record? ? "Create Manufacture" : "Update Manufacture", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to List', manufactures_path, class: 'btn btn-secondary' %>

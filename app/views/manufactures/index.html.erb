@@ -1,0 +1,27 @@
+<h1>Manufacture List</h1>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @manufactures.each do |manufacture| %>
+      <tr>
+        <td><%= manufacture.name %></td>
+        <td><%= manufacture.description %></td>
+        <td>
+          <%= link_to 'View', manufacture_path(manufacture), class: 'btn btn-info' %>
+          <%= link_to 'Edit', edit_manufacture_path(manufacture), class: 'btn btn-warning' %>
+          <%= button_to 'Delete', manufacture, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Add Manufacture', new_manufacture_path, class: 'btn btn-success' %>
+
