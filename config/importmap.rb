@@ -9,3 +9,6 @@ pin "@rails/actioncable", to: "actioncable.esm.js"
 pin_all_from "app/javascript/channels", under: "channels"
 pin "popper", to: 'popper.js', preload: true
 pin "bootstrap", to: 'bootstrap.min.js', preload: true
+# pin "@popperjs/core", to: "@popperjs--core.js" # @2.11.8
+pin "@popperjs/core", to: "@popperjs--core.js" # @2.11.8
+

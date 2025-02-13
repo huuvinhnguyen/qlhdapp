@@ -1,29 +1,77 @@
-<h1><%= @payment.new_record? ? "Add New Payment" : "Edit Payment" %></h1>
 
-<%= form_with model: @payment, local: true do |f| %>
-  <div>
-    <%= f.label :name, "Name" %>
-    <%= f.text_field :name, required: true %>
-  </div>
-
-  <div>
-    <%= f.label :description, "Description" %>
-    <%= f.text_area :description %>
-  </div>
-
-  <div>
-    <%= f.label :amount, "Amount" %>
-    <%= f.number_field :amount, step: 0.01, required: true %>
-  </div>
-
-  <div>
-    <%= f.label :payment_date, "Payment Date" %>
-    <%= f.date_field :payment_date, required: true %>
-  </div>
-
-  <div>
-    <%= f.submit @payment.new_record? ? "Create Payment" : "Update Payment", class: "btn btn-primary" %>
+<h1>New Payment</h1>
+<% if @payment.errors.any? %>
+  <div class="alert alert-danger">
+    <ul>
+      <% @payment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
   </div>
 <% end %>
+<%= form_with model: [@contract, @payment], local: true do |f| %>
+    <!-- Thêm trường ẩn contract_id -->
+    <div>
+    <%= f.label :contract_id, "Contract No" %>
+    <div class="d-flex">
+      <%= f.collection_select :contract_id, Contract.all, :id, :contract_no, { prompt: "Select Contract" }, { class: "form-control" } %>
+      <%= link_to 'Add Contract', new_contract_path, class: 'btn btn-success' %>
 
-<%= link_to 'Back to List', payments_path, class: 'btn btn-secondary' %>
+    </div>
+    </div>
+
+
+    <div>
+      <%= f.label :product_name, "Product Name" %>
+      <%= f.text_field :product_name, required: true %>
+    </div>
+
+    <div>
+      <%= f.label :amount, "Amount" %>
+      <%= f.number_field :amount, step: 0.01, required: true %>
+    </div>
+
+    <div>
+      <%= f.label :payment_date, "Payment Date" %>
+      <%= f.date_field :payment_date, required: true %>
+    </div>
+
+    <!-- Thêm select box cho status -->
+    <div>
+      <%= f.label :status_id, "Status" %>
+      <%= f.collection_select :status_id, Status.all, :id, :name, { prompt: "Select Status" } %>
+    </div>
+
+    <h3>Bank Transaction</h3>
+    <div id="bank_transaction">
+      <%= f.fields_for :transactions, @payment.transactions.build(source: 'bank') do |t| %>
+        <div class="nested-fields">
+          <%= t.number_field :amount, placeholder: "Amount" %>
+          <%= t.number_field :exchange_rate, step: 0.01, placeholder: "Exchange Rate" %>
+          <%= t.number_field :vnd_value, placeholder: "VND Value" %>
+          <%= t.hidden_field :source, value: "bank" %>
+        </div>
+      <% end %>
+    </div>
+
+    <h3>Personal Transaction</h3>
+    <div id="personal_transaction">
+      <%= f.fields_for :transactions, @payment.transactions.build(source: 'personal') do |t| %>
+        <div class="nested-fields">
+          <%= t.number_field :amount, placeholder: "Amount" %>
+          <%= t.number_field :exchange_rate, step: 0.01, placeholder: "Exchange Rate" %>
+          <%= t.number_field :vnd_value, placeholder: "VND Value" %>
+          <%= t.hidden_field :source, value: "personal" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.submit @payment.new_record? ? "Create Payment" : "Update Payment", class: "btn btn-primary" %>
+    </div>
+<% end %>
+
+<%= link_to 'Back', contracts_path %>
+<%= link_to 'Back to Contract', @contract, class: 'btn btn-secondary' %>
+
+  

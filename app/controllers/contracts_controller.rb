@@ -6,6 +6,7 @@ class ContractsController < ApplicationController
     end
   
     def show
+        @payments = @contract.payments # Ensure @payments is assigned
     end
   
     def new

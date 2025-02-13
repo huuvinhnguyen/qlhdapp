@@ -3,20 +3,28 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
+      <th>Contract No</th>
+      <th>Product Name</th>
+      <th>Status</th>
       <th>Amount</th>
       <th>Payment Date</th>
-      <th>Actions</th>
+      <th>Bank</th>
+      <th>Personal</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <% @payments.each do |payment| %>
       <tr>
-        <td><%= payment.name %></td>
-        <td><%= payment.description %></td>
+        <td><%= payment.contract&.contract_no %></td>
+        <td><%= payment.product_name %></td>
+        <td><%= payment.status&.name %></td>
         <td><%= number_to_currency(payment.amount) %></td>
         <td><%= payment.payment_date %></td>
+        <td><%= payment.bank_transactions.first&.amount %></td>
+        <td><%= payment.personal_transactions.first&.amount %></td>
+
+
         <td>
           <%= link_to 'View', payment_path(payment), class: 'btn btn-info' %>
           <%= link_to 'Edit', edit_payment_path(payment), class: 'btn btn-warning' %>

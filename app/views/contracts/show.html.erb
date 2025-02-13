@@ -1,9 +1,41 @@
 <h1>Contract Details</h1>
 
 <p><strong>Contract No:</strong> <%= @contract.contract_no %></p>
-<p><strong>Description:</strong> <%= @contract.description %></p>
 <p><strong>Contract Date:</strong> <%= @contract.contract_date %></p>
+<p><strong>Manufacture:</strong> <%= @contract.manufacture.name %></p>
+
 
 <%= link_to 'Edit', edit_contract_path(@contract), class: 'btn btn-warning' %>
 <%= button_to 'Delete', @contract, method: :delete, data: { confirm: 'Are you sure you want to delete this contract?' }, class: 'btn btn-danger' %>
 <%= link_to 'Back to List', contracts_path, class: 'btn btn-secondary' %>
+
+<hr>
+
+<h2>Payments</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @contract.payments.each do |payment| %>
+      <tr>
+        <td><%= payment.product_name %></td>
+        <td><%= payment.status&.name %></td>
+        <td><%= number_to_currency(payment.amount, unit: "VND") %></td>
+        <td><%= payment.payment_date.strftime("%d/%m/%Y") %></td>
+        <td>
+          <%= button_to "Delete", contract_payment_path(@contract, payment), method: :delete, data: { confirm: "Bạn có chắc muốn xóa?" }, class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Add Payment", new_contract_payment_path(@contract), class: "btn btn-primary" %>

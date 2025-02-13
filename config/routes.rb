@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  resources :contracts
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :manufactures
   resources :payments
+  resources :contracts do
+    resources :payments, only: [:new, :create, :index, :destroy]
+  end
 
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
