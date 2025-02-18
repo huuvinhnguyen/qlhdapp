@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :manufactures
-  resources :payments
+  resources :payments do
+    collection do
+      get :manufactures
+    end
+  end
   resources :contracts do
     resources :payments, only: [:new, :create, :index, :destroy]
   end

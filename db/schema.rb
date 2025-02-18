@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_12_032926) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_15_041142) do
   create_table "contracts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "contract_no"
     t.text "description"
@@ -33,13 +33,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_12_032926) do
   create_table "payments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.decimal "amount", precision: 10
     t.date "payment_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "contract_id"
     t.string "product_name"
     t.bigint "status_id"
+    t.integer "quantity"
+    t.decimal "price", precision: 10
+    t.bigint "paid", default: 0, null: false
     t.index ["contract_id"], name: "index_payments_on_contract_id"
     t.index ["status_id"], name: "index_payments_on_status_id"
   end

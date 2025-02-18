@@ -1,6 +1,12 @@
 {
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "rails_admin": "3.1.4"
+    "@popperjs/core": "^2.11.6",
+    "rails_admin": "3.2.0",
+    "sass": "^1.85.0"
+  },
+  
+  "scripts": {
+    "build": "sass ./app/assets/stylesheets/rails_admin.scss:./app/assets/builds/rails_admin.css --no-source-map --load-path=node_modules",
+    "build:css": "sass ./app/assets/stylesheets/rails_admin.scss:./app/assets/builds/rails_admin.css --no-source-map --load-path=node_modules"
   }
 }

@@ -1,9 +1,12 @@
 class Payment < ApplicationRecord
     belongs_to :contract, optional: true
-    validates :amount, presence: true, numericality: { greater_than: 0 }
+    validates :paid, numericality: { greater_than_or_equal_to: 0 }
     has_many :transactions, dependent: :destroy
     accepts_nested_attributes_for :transactions, allow_destroy: true
     belongs_to :status, optional: true
+
+    validates :quantity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+    validates :price, numericality: { greater_than: 0 }, allow_nil: true
     def bank_transactions
         transactions.where(source: 'bank')
     end

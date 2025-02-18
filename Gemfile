@@ -49,7 +49,7 @@ gem "bootsnap", require: false
 
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 5.1.3'
-gem 'rails_admin', '3.1.4'
+gem 'rails_admin', '3.2.0'
 gem 'byebug', group: :development
 gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.1.1'
 gem "stimulus-rails"
@@ -84,3 +84,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+gem "cssbundling-rails"
+
