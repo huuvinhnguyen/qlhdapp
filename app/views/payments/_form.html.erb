@@ -68,7 +68,7 @@
     <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'bank') do |t| %>
         <div class="nested-fields row g-2 align-items-center">
         <div class="col-md-4">
-            <%= t.number_field :amount, placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" } %>
+            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" } %>
         </div>
         <div class="col-md-4">
             <%= t.number_field :exchange_rate, placeholder: "Exchange Rate", class: "form-control transaction-input", step: 0.01, data: { type: "exchange_rate" } %>

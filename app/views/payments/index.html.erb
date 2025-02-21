@@ -1,10 +1,11 @@
-<% @payments.group_by(&:payment_date).each do |date, payments| %>
+<% @payments.order(payment_date: :desc).group_by(&:payment_date).each do |date, payments| %>
   <h2><%= date.strftime("%Y-%m-%d") %></h2>
 
   <% 
-    total_bank = payments.sum { |p| p.bank_transactions.sum(&:amount).to_f }
-    total_personal = payments.sum { |p| p.personal_transactions.sum(&:amount).to_f }
+    total_bank = payments.sum { |p| p.bank_transactions.sum { |t| t.amount.to_f if t.amount.present? }.to_f }
+    total_personal = payments.sum { |p| p.personal_transactions.sum { |t| t.amount.to_f if t.amount.present? }.to_f }
   %>
+
 
   <table class="table">
     <thead>
@@ -43,8 +44,8 @@
           <td class="text-end"><%= number_to_currency(total_amount, precision: 0, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(payment.paid, precision: 0, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(total_payment, precision: 0, unit: "") %></td>
-          <td class="text-end"><%= number_to_currency(payment.bank_transactions.sum(&:amount), precision: 0, unit: "") %></td>
-          <td class="text-end"><%= number_to_currency(payment.personal_transactions.sum(&:amount), precision: 0, unit: "") %></td>
+          <td class="text-end"><%= number_to_currency(payment.bank_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
+          <td class="text-end"><%= number_to_currency(payment.personal_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td>
             <%= link_to 'View', payment_path(payment), class: 'btn btn-info' %>
             <%= link_to 'Edit', edit_payment_path(payment), class: 'btn btn-warning' %>
@@ -58,8 +59,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td class="text-end"><strong><%= number_to_currency(total_bank, precision: 0) %></strong></td>
-        <td class="text-end"><strong><%= number_to_currency(total_personal, precision: 0) %></strong></td>
+        <td class="text-end"><strong><%= number_to_currency(total_bank, precision: 2, strip_insignificant_zeros: true) %></strong></td>
+        <td class="text-end"><strong><%= number_to_currency(total_personal, precision: 2, strip_insignificant_zeros: true) %></strong></td>
         <td></td>
       </tr>
       <% total_bank_vnd = payments.sum { |p| p.bank_transactions.sum("amount * exchange_rate") } %>
