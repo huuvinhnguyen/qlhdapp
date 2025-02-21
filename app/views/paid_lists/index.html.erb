@@ -1,0 +1,25 @@
+<h3>Paid List</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Paid Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paid_lists.each do |paid| %>
+      <tr>
+        <td><%= paid.paid_date.strftime("%d/%m/%Y") %></td>
+        <td><%= paid.formatted_amount %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total Paid Amount</th>
+      <th><%= @paid_lists.sum(&:amount).to_f %></th>
+    </tr>
+  </tfoot>
+</table>
+
+<%= link_to "Add Paid Amount", new_contract_paid_list_path(@contract), class: "btn btn-success" %>
