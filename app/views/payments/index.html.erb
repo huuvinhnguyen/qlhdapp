@@ -40,10 +40,10 @@
           <td class="text-end"><%= payment.product_name %></td>
           <td class="text-end"><%= payment.status&.name %></td>
           <td class="text-end"><%= payment.quantity %></td>
-          <td class="text-end"><%= number_to_currency(payment.price, precision: 0, unit: "") %></td>
-          <td class="text-end"><%= number_to_currency(total_amount, precision: 0, unit: "") %></td>
-          <td class="text-end"><%= number_to_currency(payment.paid, precision: 0, unit: "") %></td>
-          <td class="text-end"><%= number_to_currency(total_payment, precision: 0, unit: "") %></td>
+          <td class="text-end"><%= number_to_currency(payment.price, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
+          <td class="text-end"><%= number_to_currency(total_amount, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
+          <td class="text-end"><%= number_to_currency(payment.paid, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
+          <td class="text-end"><%= number_to_currency(total_payment, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(payment.bank_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(payment.personal_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td>

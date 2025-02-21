@@ -30,12 +30,12 @@
 
     <div class="col-md-4">
         <%= f.label :price, "Price" %>
-        <%= f.number_field :price, placeholder: "Enter price", class: "form-control", id: "price", oninput: "calculateAmount()" %>
+        <%= f.number_field :price, step: "0.01", placeholder: "Enter price", class: "form-control", id: "price", oninput: "calculateAmount()" %>
     </div>
 
     <div class="col-md-4">
         <%= f.label :amount, "Amount" %>
-        <%= f.number_field :amount, class: "form-control", id: "amount", readonly: true %>
+        <%= f.number_field :amount, class: "form-control", id: "amount", readonly: true, disabled: true %>
     </div>
 
   </div>
@@ -88,7 +88,7 @@
         <div class="nested-fields row g-2 align-items-center">
           <%= t.hidden_field :id %>
           <div class="col-md-4">
-            <%= t.number_field :amount, placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" } %>
+            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" } %>
           </div>
           <div class="col-md-4">
             <%= t.number_field :exchange_rate, placeholder: "Exchange Rate", class: "form-control transaction-input", step: 0.01, data: { type: "exchange_rate" } %>
