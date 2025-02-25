@@ -44,6 +44,6 @@ class ManufacturesController < ApplicationController
   end
 
   def manufacture_params
-    params.require(:manufacture).permit(:name, :description)
+    params.require(:manufacture).permit(:name, :description, :contract_id)
   end
 end

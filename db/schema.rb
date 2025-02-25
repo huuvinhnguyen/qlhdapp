@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_25_052047) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_25_063607) do
   create_table "contracts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "contract_no"
     t.text "description"
@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_25_052047) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "contract_id", null: false
+    t.bigint "contract_id"
     t.index ["contract_id"], name: "index_manufactures_on_contract_id"
   end
 
