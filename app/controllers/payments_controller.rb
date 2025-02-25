@@ -5,6 +5,7 @@ class PaymentsController < ApplicationController
         @payments = Payment.all
     end
     def new
+
       @payment = Payment.new
       @payment.transactions.build # Tạo giao dịch mới trong form
 
@@ -51,6 +52,34 @@ class PaymentsController < ApplicationController
         format.json { render json: @payments_by_manufacture }
       end
     end
+
+    def last_payment
+      contract_id = params[:contract_id]
+      product_name = params[:product_name]
+    
+      last_payment = Payment.where(contract_id: contract_id, product_name: product_name)
+                            .order(payment_date: :desc)
+                            .first
+    
+      if last_payment
+        render json: {
+          quantity: last_payment.quantity,
+          price: last_payment.price,
+          amount: last_payment.quantity * last_payment.price,
+          paid: last_payment.paid,
+          payment_date: last_payment.payment_date,
+          status_id: last_payment.status_id,
+          last_bank_amount: last_payment.bank_transactions.last.amount,
+          last_bank_exchange_rate: last_payment.bank_transactions.last.exchange_rate,
+          last_personal_amount: last_payment.personal_transactions.last.amount,
+          last_personal_exchange_rate: last_payment.personal_transactions.last.exchange_rate,
+
+        }
+      else
+        render json: {}
+      end
+    end
+    
     
   
     private

@@ -13,14 +13,20 @@
     <%= f.label :contract_id, "Contract No" %>
     <div class="d-flex">
       <%= f.collection_select :contract_id, Contract.all, :id, :contract_no, { prompt: "Select Contract" }, { class: "form-control" } %>
-      <%= link_to 'Add Contract', new_contract_path, class: 'btn btn-success' %>
     </div>
   </div>
 
   <div>
-    <%= f.label :product_name, "Product Name" %>
-    <%= f.text_field :product_name, required: true %>
-  </div>
+  <%= f.label :product_name, "Product Name" %>
+  <%= f.text_field :product_name, required: true, size: 50, list: "product_names_list" %>
+
+  <datalist id="product_names_list">
+    <% Payment.select(:product_name).distinct.pluck(:product_name).each do |name| %>
+      <option value="<%= name %>">
+    <% end %>
+  </datalist>
+</div>
+
 
   <div class="nested-fields row g-2 align-items-center">
     <div class="col-md-4">
@@ -38,11 +44,6 @@
         <%= f.number_field :amount, class: "form-control", id: "amount", readonly: true, disabled: true %>
     </div>
 
-  </div>
-
-  <div>
-    <%= f.label :paid, "Paid Amount" %>
-    <%= f.number_field :paid, class: "form-control", placeholder: "Enter paid amount" %>
   </div>
 
   <script>

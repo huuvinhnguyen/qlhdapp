@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :payments do
     collection do
       get :manufactures
+      get :last_payment
     end
   end
   resources :contracts do
