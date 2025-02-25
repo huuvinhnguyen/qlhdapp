@@ -1,6 +1,5 @@
 class Payment < ApplicationRecord
     belongs_to :contract, optional: true
-    validates :paid, numericality: { greater_than_or_equal_to: 0 }
     has_many :transactions, dependent: :destroy
     accepts_nested_attributes_for :transactions, allow_destroy: true
     belongs_to :status, optional: true

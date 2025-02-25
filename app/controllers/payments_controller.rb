@@ -66,7 +66,6 @@ class PaymentsController < ApplicationController
           quantity: last_payment.quantity,
           price: last_payment.price,
           amount: last_payment.quantity * last_payment.price,
-          paid: last_payment.paid,
           payment_date: last_payment.payment_date,
           status_id: last_payment.status_id,
           last_bank_amount: last_payment.bank_transactions.last.amount,
@@ -93,7 +92,7 @@ class PaymentsController < ApplicationController
     end
   
     def payment_params
-      params.require(:payment).permit(:name, :product_name, :payment_date, :status_id, :contract_id, :quantity, :price, :paid,
+      params.require(:payment).permit(:name, :product_name, :payment_date, :status_id, :contract_id, :quantity, :price,
       transactions_attributes: [:id, :amount, :exchange_rate, :vnd_value, :source]
       )
     end

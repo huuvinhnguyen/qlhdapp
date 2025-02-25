@@ -6,7 +6,7 @@
     total_personal = payments.sum { |p| p.personal_transactions.sum { |t| t.amount.to_f if t.amount.present? }.to_f }
   %>
 
-
+<div style="overflow-x:auto;">
   <table class="table">
     <thead>
       <tr>
@@ -50,7 +50,7 @@
           <td class="text-end"><%= number_to_currency(payment.bank_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(payment.personal_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td>
-            <%= link_to 'View', payment_path(payment), class: 'btn btn-info' %>
+
             <%= link_to 'Edit', edit_payment_path(payment), class: 'btn btn-warning' %>
             <%= button_to 'Delete', payment, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </td>
@@ -81,6 +81,7 @@
       </tr>
     </tbody>
   </table>
+</div>
 <% end %>
 
 <%= link_to 'Add Payment', new_payment_path, class: 'btn btn-success' %>
