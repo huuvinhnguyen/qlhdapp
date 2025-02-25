@@ -7,11 +7,11 @@
   %>
 
 <div style="overflow-x:auto;">
-  <table class="table">
+  <table class="table table-striped w-auto">
     <thead>
       <tr>
         <th class="text-end">Contract No</th>
-        <th class="text-end">Product Name</th>
+        <th class="wide-column">Product Name</th>
         <th class="text-end">Status</th>
         <th class="text-end">Quantity</th>
         <th class="text-end">Price</th>
@@ -37,7 +37,7 @@
               N/A
             <% end %>
           </td>
-          <td class="text-end"><%= payment.product_name %></td>
+          <td class="wide-column"><%= payment.product_name %></td>
           <td class="text-end"><%= payment.status&.name %></td>
           <td class="text-end"><%= payment.quantity %></td>
           <td class="text-end"><%= number_to_currency(payment.price, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
