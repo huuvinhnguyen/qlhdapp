@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
   resources :contracts do
     resources :payments, only: [:new, :create, :index, :destroy]
-    resources :paid_lists, only: [:index, :new, :create]
+    resources :paid_lists, only: [:index, :new, :create, :destroy]
   end
 
 

@@ -10,9 +10,9 @@
   <table class="table table-striped w-auto">
     <thead>
       <tr>
-        <th class="text-end">Contract No</th>
+        <th class="wide-contract-no">Contract No</th>
         <th class="wide-column">Product Name</th>
-        <th class="text-end">Status</th>
+        <th class="wide-status">Status</th>
         <th class="text-end">Quantity</th>
         <th class="text-end">Price</th>
         <th class="text-end">Total</th>
@@ -27,29 +27,29 @@
       <% payments.each do |payment| %>
         <tr>
           <% 
-            total_amount = payment.quantity * payment.price
+            total_amount = payment.quantity.to_f * payment.price.to_f
             total_payment = payment.bank_transactions.sum(&:amount) + payment.personal_transactions.sum(&:amount)
           %>
-          <td>
+          <td class="wide-contract-no">
             <% if payment.contract %>
               <%= link_to payment.contract.contract_no, contract_path(payment.contract), class: "text-primary" %>
             <% else %>
               N/A
             <% end %>
           </td>
-          <td class="wide-column"><%= payment.product_name %></td>
-          <td class="text-end"><%= payment.status&.name %></td>
+          <td class="wide-status"><%= payment.product_name %></td>
+          <td class="wide-status"><%= payment.status&.name %></td>
           <td class="text-end"><%= payment.quantity %></td>
           <td class="text-end"><%= number_to_currency(payment.price, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(total_amount, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td class="text-end">
-            <%= link_to number_to_currency(payment&.contract&.total_paid, precision: 2, strip_insignificant_zeros: true, unit: ""), contract_paid_lists_path(payment.contract), class: "text-primary" %>
+            <%= link_to number_to_currency(payment.contract&.total_paid_up_to(payment.payment_date), precision: 2, strip_insignificant_zeros: true, unit: ""), contract_paid_lists_path(payment.contract), class: "text-primary" %>
           </td>
           <td class="text-end"><%= number_to_currency(total_payment, precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           
           <td class="text-end"><%= number_to_currency(payment.bank_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
           <td class="text-end"><%= number_to_currency(payment.personal_transactions.sum(&:amount), precision: 2, strip_insignificant_zeros: true, unit: "") %></td>
-          <td>
+          <td class="wide-column d-flex gap-2">
 
             <%= link_to 'Edit', edit_payment_path(payment), class: 'btn btn-warning' %>
             <%= button_to 'Delete', payment, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>

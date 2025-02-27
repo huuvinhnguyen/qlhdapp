@@ -7,4 +7,8 @@ class Contract < ApplicationRecord
     def total_paid
         paid_lists.sum(:amount)
     end
+
+    def total_paid_up_to(payment_date)
+        paid_lists.where("paid_date <= ?", payment_date).sum(:amount)
+    end
 end

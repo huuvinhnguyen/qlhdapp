@@ -66,10 +66,10 @@
 
   <h3>Bank Transaction</h3>
     <div id="bank_transaction">
-    <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'bank') do |t| %>
+    <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'bank') || @payment.transactions.build(source: 'bank', amount: 0, exchange_rate: 1) do |t| %>
         <div class="nested-fields row g-2 align-items-center">
         <div class="col-md-4">
-            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" } %>
+            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" }, value: t.object.amount || 0  %>
         </div>
         <div class="col-md-4">
             <%= t.number_field :exchange_rate, placeholder: "Exchange Rate", class: "form-control transaction-input", step: 0.01, data: { type: "exchange_rate" } %>
@@ -85,11 +85,11 @@
 
     <h3>Personal Transaction</h3>
     <div id="personal_transaction">
-      <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'personal') do |t| %>
+      <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'personal') || @payment.transactions.build(source: 'personal', amount: 0, exchange_rate: 1) do |t| %>
         <div class="nested-fields row g-2 align-items-center">
           <%= t.hidden_field :id %>
           <div class="col-md-4">
-            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" } %>
+            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" }, value: t.object.amount || 0  %>
           </div>
           <div class="col-md-4">
             <%= t.number_field :exchange_rate, placeholder: "Exchange Rate", class: "form-control transaction-input", step: 0.01, data: { type: "exchange_rate" } %>

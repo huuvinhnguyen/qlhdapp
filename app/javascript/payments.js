@@ -24,17 +24,16 @@ $(document).on("turbo:load", function() {
                     let amount = (data.quantity * data.price) || 0;
                     $("#amount").val(amount.toFixed(2));
     
-                    $("#payment_paid").val(data.paid || "");
                     $("#payment_payment_date").val(data.payment_date || "");
                     $("#payment_status_id").val(data.status_id || "");
     
-                    $("#bank_transaction input[data-type='amount']").val(data.last_bank_amount || "");
-                    $("#bank_transaction input[data-type='exchange_rate']").val(data.last_bank_exchange_rate || "");
-                    $("#bank_transaction input[data-type='vnd_value']").val(data.last_bank_amount * data.last_bank_exchange_rate || "");
+                    $("#bank_transaction input[data-type='amount']").val(data.last_bank_amount || 0);
+                    $("#bank_transaction input[data-type='exchange_rate']").val(data.last_bank_exchange_rate || 0);
+                    $("#bank_transaction input[data-type='vnd_value']").val(data.last_bank_amount * data.last_bank_exchange_rate || 0);
 
-                    $("#personal_transaction input[data-type='amount']").val(data.last_personal_amount || "");
-                    $("#personal_transaction input[data-type='exchange_rate']").val(data.last_personal_exchange_rate || "");
-                    $("#personal_transaction input[data-type='vnd_value']").val(data.last_personal_amount * data.last_personal_exchange_rate || "");
+                    $("#personal_transaction input[data-type='amount']").val(data.last_personal_amount || 0);
+                    $("#personal_transaction input[data-type='exchange_rate']").val(data.last_personal_exchange_rate || 0);
+                    $("#personal_transaction input[data-type='vnd_value']").val(data.last_personal_amount * data.last_personal_exchange_rate || 0);
 
 
                 },

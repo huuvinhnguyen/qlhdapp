@@ -17,4 +17,12 @@ class Payment < ApplicationRecord
     def add_status(name, type)
         statuses.create(name: name, type: type)
     end
+
+    def quantity
+        read_attribute(:quantity).to_i || 0
+    end
+
+    def price
+        read_attribute(:price).to_f || 0.0
+    end
 end
