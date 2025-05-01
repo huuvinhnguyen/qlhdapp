@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
-ruby "3.1.2"
+ruby '>= 3.1', '<= 3.2'
+
+gem 'mysql2', '>= 0.4.4'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.4"
@@ -44,6 +46,21 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+
+gem 'bootsnap', require: false
+gem 'bootstrap', '~> 5.1.3'
+gem 'rails_admin', '3.2.0'
+gem 'byebug', group: :development
+gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.1.1'
+gem "stimulus-rails"
+gem "jbuilder"
+gem "importmap-rails"
+gem 'carrierwave'
+gem 'jquery-rails'
+gem 'slack-notifier'
+gem 'devise'
+gem 'rolify'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
@@ -67,3 +84,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+gem "cssbundling-rails"
+

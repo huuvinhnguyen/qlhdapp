@@ -1,0 +1,19 @@
+<h3>Add Paid Amount</h3>
+
+<%= form_with model: [@contract, @paid_list], local: true do |f| %>
+  <div>
+    <%= f.label :paid_date, "Paid Date" %>
+    <%= f.date_field :paid_date, required: true %>
+  </div>
+
+  <div>
+    <%= f.label :amount, "Paid Amount" %>
+    <%= f.number_field :amount, step: "0.01", required: true %>
+  </div>
+
+  <div>
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to "Back", contract_paid_lists_path(@contract), class: "btn btn-secondary" %>

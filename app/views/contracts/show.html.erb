@@ -1,0 +1,109 @@
+<h1>Contract Details</h1>
+
+<p><strong>Contract No:</strong> <%= @contract.contract_no %></p>
+<p><strong>Contract Date:</strong> <%= @contract.contract_date %></p>
+<p><strong>Manufacture:</strong> <%= @contract.manufacture.name %></p>
+
+
+<%= link_to 'Edit', edit_contract_path(@contract), class: 'btn btn-warning' %>
+<%= button_to 'Delete', @contract, method: :delete, data: { confirm: 'Are you sure you want to delete this contract?' }, class: 'btn btn-danger' %>
+<%= link_to 'Back to List', contracts_path, class: 'btn btn-secondary' %>
+
+<hr>
+
+<h2>Payments</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @contract.payments.group_by(&:product_name).each do |product_name, payments| %>
+      <% total_payment = payments.sum { |p| p.transactions.sum(:amount) } %>
+      <% total_payment_vnd = payments.sum { |p| p.transactions.sum("amount * exchange_rate") } %>
+
+      <!-- Dòng chứa Product Name và bảng lồng -->
+      <tr class="table-primary">
+        <td><strong><%= product_name %></strong></td>
+        <td>
+          <!-- Nested table -->
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Date</th>
+                <th></th>
+                <th></th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% payments.each do |payment| %>
+                <tr>
+                  <td><strong><%= payment.status&.name %></strong></td>
+                  <td><strong><%= payment.payment_date.strftime("%d/%m/%Y") %></strong></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <%= button_to "Delete", contract_payment_path(@contract, payment), method: :delete, data: { confirm: "Bạn có chắc muốn xóa?" }, class: "btn btn-danger" %>
+                  </td>
+                </tr>
+
+                <!-- Hàng hiển thị transactions -->
+                <tr>
+                  <td colspan="4">
+                    <table class="table table-sm">
+                      <thead class="table-light">
+                        <tr>
+                          <th></th>
+                          <th>Amount</th>
+                          <th>Exchange Rate</th>
+                          <th>VND</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% payment.transactions.each do |transaction| %>
+                          <tr>
+                            <td><%= transaction.source.capitalize %></td>
+                            <td><%= transaction.amount %></td>
+                            <td><%= transaction.exchange_rate %></td>
+                            <td><%= number_to_currency(transaction.amount * transaction.exchange_rate, unit: "VND") %></td>
+                          </tr>
+                          
+                        <% end %>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong><%= payment.transactions.sum(:amount) %></strong></td>
+                            <td></td>
+                            <td><strong><%= number_to_currency(payment.transactions.sum("amount * exchange_rate"), unit: "VND") %></strong></td>
+                          </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              <% end %>
+
+              <!-- Tổng cộng -->
+              <tr class="table-warning">
+                <td><strong>Total</strong></td>
+                <td><strong><%= total_payment %></strong></td>
+                <td><strong><%= number_to_currency(total_payment_vnd, unit: "VND") %></strong></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+
+
+<%= link_to "Add Payment", new_contract_payment_path(@contract), class: "btn btn-primary" %>

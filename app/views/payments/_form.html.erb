@@ -1,0 +1,122 @@
+<% if @payment.errors.any? %>
+  <div class="alert alert-danger">
+    <ul>
+      <% @payment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [@contract, @payment], local: true do |f| %>
+  <div>
+    <%= f.label :contract_id, "Contract No" %>
+    <div class="d-flex">
+      <%= f.collection_select :contract_id, Contract.all, :id, :contract_no, { prompt: "Select Contract" }, { class: "form-control" } %>
+    </div>
+  </div>
+
+  <div>
+  <%= f.label :product_name, "Product Name" %>
+  <%= f.text_field :product_name, required: true, size: 50, list: "product_names_list" %>
+
+  <datalist id="product_names_list">
+    <% Payment.select(:product_name).distinct.pluck(:product_name).each do |name| %>
+      <option value="<%= name %>">
+    <% end %>
+  </datalist>
+</div>
+
+
+  <div class="nested-fields row g-2 align-items-center">
+    <div class="col-md-4">
+        <%= f.label :quantity, "Quantity" %>
+        <%= f.number_field :quantity, placeholder: "Enter quantity", class: "form-control", id: "quantity", oninput: "calculateAmount()" %>
+    </div>
+
+    <div class="col-md-4">
+        <%= f.label :price, "Price" %>
+        <%= f.number_field :price, step: "0.01", placeholder: "Enter price", class: "form-control", id: "price", oninput: "calculateAmount()" %>
+    </div>
+
+    <div class="col-md-4">
+        <%= f.label :amount, "Amount" %>
+        <%= f.number_field :amount, class: "form-control", id: "amount", readonly: true, disabled: true %>
+    </div>
+
+  </div>
+
+  <script>
+    function calculateAmount() {
+      let quantity = parseFloat(document.getElementById("quantity").value) || 0;
+      let price = parseFloat(document.getElementById("price").value) || 0;
+      document.getElementById("amount").value = (quantity * price).toFixed(2);
+    }
+  </script>
+
+  <div>
+    <%= f.label :payment_date, "Payment Date" %>
+    <%= f.date_field :payment_date, required: true %>
+  </div>
+
+  <div>
+    <%= f.label :status_id, "Status" %>
+    <%= f.collection_select :status_id, Status.all, :id, :name, { prompt: "Select Status" } %>
+  </div>
+
+  <h3>Bank Transaction</h3>
+    <div id="bank_transaction">
+    <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'bank') || @payment.transactions.build(source: 'bank', amount: 0, exchange_rate: 1) do |t| %>
+        <div class="nested-fields row g-2 align-items-center">
+        <div class="col-md-4">
+            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" }, value: t.object.amount || 0  %>
+        </div>
+        <div class="col-md-4">
+            <%= t.number_field :exchange_rate, placeholder: "Exchange Rate", class: "form-control transaction-input", step: 0.01, data: { type: "exchange_rate" } %>
+        </div>
+        <div class="col-md-4">
+            <%= t.number_field :vnd_value, placeholder: "VND Value", class: "form-control", readonly: true, data: { type: "vnd_value" } %>
+        </div>
+        </div>
+        <%= t.hidden_field :source, value: "bank" %>
+    <% end %>
+    </div>
+
+
+    <h3>Personal Transaction</h3>
+    <div id="personal_transaction">
+      <%= f.fields_for :transactions, @payment.transactions.find_or_initialize_by(source: 'personal') || @payment.transactions.build(source: 'personal', amount: 0, exchange_rate: 1) do |t| %>
+        <div class="nested-fields row g-2 align-items-center">
+          <%= t.hidden_field :id %>
+          <div class="col-md-4">
+            <%= t.number_field :amount, step: "0.01", placeholder: "Amount", class: "form-control transaction-input", data: { type: "amount" }, value: t.object.amount || 0  %>
+          </div>
+          <div class="col-md-4">
+            <%= t.number_field :exchange_rate, placeholder: "Exchange Rate", class: "form-control transaction-input", step: 0.01, data: { type: "exchange_rate" } %>
+          </div>
+          <div class="col-md-4">
+            <%= t.number_field :vnd_value, placeholder: "VND Value", class: "form-control", readonly: true, data: { type: "vnd_value" } %>
+          </div>
+        </div>
+        <%= t.hidden_field :source, value: "personal" %>
+      <% end %>
+    </div>
+    
+
+  <script>
+    document.addEventListener("input", function(event) {
+      if (event.target.classList.contains("transaction-input")) {
+        let container = event.target.closest(".nested-fields");
+        let amount = parseFloat(container.querySelector("[data-type='amount']").value) || 0;
+        let exchangeRate = parseFloat(container.querySelector("[data-type='exchange_rate']").value) || 0;
+        container.querySelector("[data-type='vnd_value']").value = (amount * exchangeRate).toFixed(2);
+      }
+    });
+  </script>
+
+  <div>
+    <%= f.submit @payment.new_record? ? "Create Payment" : "Update Payment", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', payments_path %>

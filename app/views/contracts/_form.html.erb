@@ -1,0 +1,30 @@
+<%= form_with model: @contract, local: true do |f| %>
+    <div>
+      <%= f.label :contract_no, "Contract No" %>
+      <%= f.text_field :contract_no, required: true %>
+    </div>
+  
+    <div>
+        <%= f.label :product_name, "Product Name" %>
+        <%= f.text_field :product_name, required: true %>
+    </div>
+  
+    <div>
+      <%= f.label :contract_date, "Contract Date" %>
+      <%= f.date_field :contract_date, required: true %>
+    </div>
+  
+    <h3>Manufacture Information</h3>
+    <div>
+    <%= f.label :manufacture_id, "Select Manufacture" %>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <%= f.collection_select :manufacture_id, Manufacture.all, :id, :name, prompt: "Select Manufacture" %>
+        <%= link_to "Add Manufacture", new_manufacture_path, class: "btn btn-success", target: "_blank" %>
+    </div>
+    </div>
+  
+    <div>
+      <%= f.submit @contract.new_record? ? "Create Contract" : "Update Contract", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+  

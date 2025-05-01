@@ -1,0 +1,81 @@
+<h1>Payments by Manufacture</h1>
+
+<% @payments_by_manufacture.each do |manufacture, payments| %>
+  <h2><%= manufacture&.name || "Unknown Manufacture" %></h2>
+
+  <% payments.group_by(&:contract).each do |contract, contract_payments| %>
+    <h3>Contract: <%= contract&.contract_no || "N/A" %></h3>
+
+    <% 
+      total_bank = contract_payments.sum { |p| p.bank_transactions.sum(&:amount).to_f }
+      total_personal = contract_payments.sum { |p| p.personal_transactions.sum(&:amount).to_f }
+      total_bank_vnd = contract_payments.sum { |p| p.bank_transactions.sum("amount * exchange_rate") }
+      total_personal_vnd = contract_payments.sum { |p| p.personal_transactions.sum("amount * exchange_rate") }
+    %>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-end">Product Name</th>
+          <th class="text-end">Status</th>
+          <th class="text-end">Quantity</th>
+          <th class="text-end">Price</th>
+          <th class="text-end">Total</th>
+          <th class="text-end">Paid</th>
+          <th class="text-end">Payment</th>
+          <th class="text-end">Bank</th>
+          <th class="text-end">Personal</th>
+          <th class="text-end"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% contract_payments.each do |payment| %>
+          <tr>
+            <% total_amount = payment.quantity * payment.price %>
+            <% total_payment = payment.bank_transactions.sum(&:amount) + payment.personal_transactions.sum(&:amount) %>
+
+            <td class="text-end"><%= payment.product_name %></td>
+            <td class="text-end"><%= payment.status&.name %></td>
+            <td class="text-end"><%= payment.quantity %></td>
+            <td class="text-end"><%= number_to_currency(payment.price, precision: 0, unit: "") %></td>
+            <td class="text-end"><%= number_to_currency(total_amount, precision: 0, unit: "") %></td>
+            <td class="text-end">
+              <%= link_to number_to_currency(payment&.contract&.total_paid, precision: 2, strip_insignificant_zeros: true, unit: ""), contract_paid_lists_path(payment.contract), class: "text-primary" %>
+            </td>
+            <td class="text-end"><%= number_to_currency(total_payment, precision: 0, unit: "") %></td>
+            <td class="text-end"><%= number_to_currency(payment.bank_transactions.sum(&:amount), precision: 0, unit: "") %></td>
+            <td class="text-end"><%= number_to_currency(payment.personal_transactions.sum(&:amount), precision: 0, unit: "") %></td>
+            <td>
+              <%= link_to 'View', payment_path(payment), class: 'btn btn-info' %>
+              <%= link_to 'Edit', edit_payment_path(payment), class: 'btn btn-warning' %>
+              <%= button_to 'Delete', payment, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </td>
+          </tr>
+        <% end %>
+
+        <tr>
+          <td colspan="4"><strong>Total:</strong></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-end"><strong><%= number_to_currency(total_bank, precision: 0) %></strong></td>
+          <td class="text-end"><strong><%= number_to_currency(total_personal, precision: 0) %></strong></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><strong>Total (VND):</strong></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-end"><strong><%= number_to_currency(total_bank_vnd, unit: "VND", precision: 0) %></strong></td>
+          <td class="text-end"><strong><%= number_to_currency(total_personal_vnd, unit: "VND", precision: 0) %></strong></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+
+<%= link_to 'Add Payment', new_payment_path, class: 'btn btn-success' %>
+

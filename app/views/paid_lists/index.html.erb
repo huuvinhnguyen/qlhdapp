@@ -1,0 +1,31 @@
+<h3>Paid List</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Paid Amount</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paid_lists.each do |paid| %>
+      <tr>
+        <td><%= paid.paid_date.strftime("%d/%m/%Y") %></td>
+        <td><%= paid.formatted_amount %></td>
+        <td class="d-flex gap-2">
+
+          <%= link_to "Delete", contract_paid_list_path(@contract, paid), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total Paid Amount</th>
+      <th><%= number_to_currency(@paid_lists.sum(&:amount), unit: "", precision: 2) %></th>
+      <th></th>
+    </tr>
+  </tfoot>
+</table>
+
+<%= link_to "Add Paid Amount", new_contract_paid_list_path(@contract), class: "btn btn-success" %>

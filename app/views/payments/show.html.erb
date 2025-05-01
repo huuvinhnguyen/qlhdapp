@@ -1,0 +1,10 @@
+<h1>Payment Details</h1>
+
+<p><strong>Name:</strong> <%= @payment&.name %></p>
+<p><strong>Description:</strong> <%= @payment&.description %></p>
+<p><strong>Amount:</strong>XXXXXXXX</p>
+<p><strong>Payment Date:</strong> <%= @payment&.payment_date %></p>
+
+<%= link_to 'Edit', edit_payment_path(@payment), class: 'btn btn-warning' %>
+<%= link_to 'Delete', @payment, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+<%= link_to 'Back to List', payments_path, class: 'btn btn-secondary' %>
